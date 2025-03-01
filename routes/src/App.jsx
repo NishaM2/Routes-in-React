@@ -1,16 +1,20 @@
 import './App.css'
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { Dashboard } from './components/Dashboard'
-import { Landing } from './components/Landing'
+import { Suspense, lazy } from 'react';
+
+const Dashboard = lazy(() => import('./components/Dashboard'))
+const Landing = lazy(() => import('./components/Landing'))
 
 function App() {
+  // Suspense API
+
   return (
     <div>
       <BrowserRouter>
         <Appbar/>
         <Routes>
-          <Route path='/dashboard' element={<Dashboard/>} />
-          <Route path='/' element={<Landing/>} />
+          <Route path='/dashboard' element={<Suspense fallback={"loading..."}><Dashboard/></Suspense>} />
+          <Route path='/' element={<Suspense fallback={"loading..."}><Landing/></Suspense>} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -31,4 +35,5 @@ function Appbar() {
     </div>
   )
 }
+
 export default App
